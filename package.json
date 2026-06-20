@@ -1,0 +1,10 @@
+{
+  "name": "tarea-sqli",
+  "version": "1.0.0",
+  "description": "App vulnerable para tarea de BD",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.11.3"
+  }
+}

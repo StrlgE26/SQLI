@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: admin_tarea
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: tarea_sqli
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin_tarea -d tarea_sqli"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DB_USER: admin_tarea
+      DB_PASSWORD: password123
+      DB_HOST: db
+      DB_NAME: tarea_sqli
+      DB_PORT: 5432
+    depends_on:
+      db:
+        condition: service_healthy
