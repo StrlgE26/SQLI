@@ -71,6 +71,18 @@ La inyección de los caracteres especiales modifica la consulta original enviada
 * La secuencia de doble guion (--) es interpretada como el inicio de un comentario SQL, lo cual instruye al motor a omitir la validación condicional de la contraseña (AND password = '').
 * Consecuentemente, la base de datos retorna el registro asociado al correo electrónico y el sistema concede el acceso.
 
+### Evidencia de Explotación
+
+**1. Intento de acceso sin inyección (Fallo):**
+Al ingresar únicamente el correo sin alterar la consulta, el sistema valida la contraseña vacía y rechaza el acceso.
+
+![Login Fallido](assets/login-fallido.png)
+
+**2. Intento de acceso con inyección SQL (Éxito):**
+Al introducir el payload `emir@escom.com' --`, se altera la lógica de la base de datos, omitiendo la validación de la contraseña y otorgando acceso con privilegios de administrador.
+
+![SQLi Exitoso](assets/sqli-exitoso.png)
+
 ## 6. Mitigación y Buenas Prácticas
 
 La prevención definitiva contra ataques de inyección SQL requiere la implementación de **Consultas Parametrizadas** (Prepared Statements). Este paradigma asegura que el motor de la base de datos precompile la estructura de la instrucción SQL, obligando a tratar cualquier entrada del usuario estrictamente como un dato de tipo escalar y no como código ejecutable.
